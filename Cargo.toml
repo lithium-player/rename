@@ -1,0 +1,12 @@
+[package]
+authors = ["David Barnett <david@barnett.net.nz>"]
+name = "lirename"
+version = "0.1.0"
+
+[dependencies]
+clap = "2.1.1"
+walkdir = "0.1.5"
+
+[dependencies.liquery]
+git = "https://github.com/lithium-player/query"
+optional = false
