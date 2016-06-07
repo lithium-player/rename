@@ -1,11 +1,14 @@
 extern crate liquery;
+extern crate liquery_file;
 extern crate clap;
 extern crate walkdir;
 
+use std::collections::HashMap;
 use std::env;
 use walkdir::WalkDir;
 use clap::{App, Arg};
-use liquery::Query;
+use liquery::{Query, Queryable, EvalFunc};
+use liquery_file::QueryFile;
 
 fn main() {
     let app = App::new("lirename")
@@ -31,16 +34,23 @@ fn main() {
         Err(err) => {
             println!("Error: query failed to parse due to {:?}", err);
             return;
-        },
+        }
     };
 
     println!("{:?}", query);
+
+    // TODO: Include some functions
+    let func = HashMap::<String, Box<EvalFunc>>::new();
 
     for entry in WalkDir::new(path) {
         if let Ok(e) = entry {
             if let Ok(metadata) = e.metadata() {
                 if metadata.is_file() {
-                    println!("{:?}", e.path())
+                    let path = e.path();
+                    let queryable = QueryFile::new(e.path()).unwrap();
+                    println!("{} => {}",
+                             e.path().to_str().unwrap(),
+                             query.eval(&queryable, &func).unwrap());
                 }
             }
         }

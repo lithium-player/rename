@@ -10,3 +10,7 @@ walkdir = "0.1.5"
 [dependencies.liquery]
 git = "https://github.com/lithium-player/query"
 optional = false
+
+[dependencies.liquery-file]
+git = "http://github.com/lithium-player/query-file"
+optional = false
